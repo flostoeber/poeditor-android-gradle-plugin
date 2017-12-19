@@ -68,16 +68,6 @@ class ImportPoEditorStringsTaskTest {
     }
 
     @Test
-    public void testPostProcessIncomingXMLStringPercentage() throws Exception {
-        Project project = ProjectBuilder.builder().build()
-        def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
-
-        // Test % is changed to %%
-        assertEquals('Hello my friend. I love you 100%%.',
-                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello my friend. I love you 100%.'))
-    }
-
-    @Test
     public void testPostProcessIncomingXMLStringLineEnd() throws Exception {
         Project project = ProjectBuilder.builder().build()
         def task = project.task('importPoEditorStrings', type: ImportPoEditorStringsTask)
@@ -94,11 +84,11 @@ class ImportPoEditorStringsTaskTest {
 
         // Test placeholders are translated to Android format
         assertEquals('Hello %1$s.',
-                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello {{name}}.'))
+                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello %1$s.'))
         assertEquals('Hello %1$s. How are you %1$s',
-                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello {{name}}. How are you {{name}}'))
+                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello %1$s. How are you %1$s'))
         assertEquals('Hello %1$s. This is your score %2$s',
-                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello {1{name}}. This is your score {2{score}}'))
+                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello %1$s. This is your score %2$s'))
     }
 
     @Test
@@ -108,7 +98,7 @@ class ImportPoEditorStringsTaskTest {
 
         // Test HTML tags are fixed
         assertEquals('Hello <b>%1$s</b>.',
-                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello &lt;b&gt;{{name}}&lt;/b&gt;.'))
+                ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('Hello &lt;b&gt;%1$s&lt;/b&gt;.'))
     }
 
     @Test
@@ -131,13 +121,13 @@ class ImportPoEditorStringsTaskTest {
                 ' </resources>',
         ((ImportPoEditorStringsTask)task).postProcessIncomingXMLString('<resources>\n' +
                 '  <string name="general_link_showAll">\n' +
-                '    "Ver todo {{username}}"\n' +
+                '    "Ver todo %1$s"\n' +
                 '  </string>\n' +
                 '  <string name="general_button_goTop">\n' +
                 '    "Ir arriba"\n' +
                 '  </string>\n' +
                 '  <string name="general_button_back_web">\n' +
-                '    "Ir arriba {1{sectionname}} usuario {2{username}}"\n' +
+                '    "Ir arriba %1$s usuario %2$s"\n' +
                 '  </string>\n' +
                 ' </resources>'))
     }
