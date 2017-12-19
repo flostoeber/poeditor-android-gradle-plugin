@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         ...
-        classpath 'com.github.bq:poeditor-android-gradle-plugin:0.2.5'
+        classpath 'com.github.flostoeber:poeditor-android-gradle-plugin:-SNAPSHOT'
 }
 ```
 
@@ -58,70 +58,6 @@ This task will:
 - process the incoming strings to fix some PoEditor incompatibilities with Android strings system. 
 - create and save strings.xml files to ```/values-<lang>``` (or ```/values``` in case of the default lang). It supports
 region specific languages by creating the proper folders (i.e. ```/values-es-rMX```).
-
-Handle Tablet specific strings
---------
-You can mark some strings as tablet specific strings by adding ```_tablet```suffix to the string key in PoEditor. The plugin will extract tablet strings to its own XML and save it in ```values-<lang>-sw600dp```.
-
-Therefore you could define:
-
-Poeditor Strings 
-
-```welcome_message: Hey friend``` and ```welcome_message_tablet: Hey friend how are you doing today, you look great!```
-
-The plugin will create two strings.xml:
-
-/values/strings.xml
-```xml
-<string name="welcome_message">Hey friend</string>
-```
-
-/values-sw600dp/strings.xml
-```xml
-<string name="welcome_message">Hey friend how are you doing today, you look great!</string>
-```
-
-Handle placeholders
---------
-You can add placeholders to your strings. We've defined a placeholder markup to use in PoEditor string definition; it uses  {{value}}: 
-
-PoEditor string:
-
-```welcome_message: Hey {{user_name}} how are you``` 
-
-will become, in strings.xml
-
-```xml
-<string name="welcome_message">Hey %1%s how are you</string>
-```
-
-If you need more than one placeholder in the same string, you can use ordinals:
-
-PoEditor string:
-
-```welcome_message: Hey {1{user_name}} how are you, today offer is {2{current_offer}}``` 
-
-will become, in strings.xml
-
-```xml
-<string name="welcome_message">Hey %1%s how are you, today offer is %2%s</string>
-```
-
-This way you could change the order of the placeholders depending on the language:
-
-PoEditor string with spanish translation:
-
-```welcome_message: La oferta del día es {2{current_offer}} para ti, {1{user_name}}``` 
-
-will become, in values-es/strings.xml
-
-```xml
-<string name="welcome_message">La oferta del día es %2%s para ti, %1%s</string>
-```
-
-To-Do
--------
-* Change placeholder system to avoid using ordinals by taking into account the placeholder value instead.
 
 License
 -------
