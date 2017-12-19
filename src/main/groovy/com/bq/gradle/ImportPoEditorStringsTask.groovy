@@ -83,19 +83,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
 
             // Extract tablet strings to a separate strings XML
             def translationFileRecords = new XmlParser().parseText(translationFileText)
-            def tabletNodes = translationFileRecords.children().findAll {
-                it.@name.endsWith('_tablet')
-            }
-            String tabletXmlString = """
-                    <resources>
-                     <!-- Tablet strings -->
-                    </resources>"""
-            def tabletRecords = new XmlParser().parseText(tabletXmlString)
-            tabletNodes.each {
-                translationFileRecords.remove(it)
-                it.@name = it.@name.replace("_tablet", "")
-                tabletRecords.append(it)
-            }
 
             // Build final strings XMLs ready to be written to files
             StringWriter sw = new StringWriter()
@@ -117,13 +104,6 @@ class ImportPoEditorStringsTask extends DefaultTask {
                 println 'Creating strings folder for new language'
                 def folderCreated = stringsFolder.mkdir()
                 println "Folder created: ${folderCreated}"
-            }
-            def tabletValuesFolder = valuesModifier != defaultLang ? "values-${valuesModifier}-sw600dp" : "values-sw600dp"
-            File tabletStringsFolder = new File("${resDirPath}/${tabletValuesFolder}")
-            if (!tabletStringsFolder.exists()) {
-                println 'Creating tablet strings folder for new language'
-                def tabletFolderCreated = tabletStringsFolder.mkdir()
-                println "Folder created: ${tabletFolderCreated}"
             }
 
             // TODO delete existing strings.xml files
